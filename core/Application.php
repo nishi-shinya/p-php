@@ -8,6 +8,7 @@ abstract class Application
   protected $response;
   protected $session;
   protected $db_manager;
+  protected $login_action = [];
 
   public function __construct($debug = false)
   {
@@ -92,15 +93,22 @@ abstract class Application
 
   public function run()
   {
-    $params = $this->router->resolve($this->request->getPathInfo());
-    if($params === false) {
-      // TODO-A
+    try {
+      $params = $this->router->resolve($this->request->getPathInfo());
+      if ($params === false) {
+          throw new HttpNotFoundException(('No route found for ' . $this->request->getPathInfo()));
+      }
+
+      $controller = $params['controller'];
+      $action = $params['action'];
+
+      $this->runAction($controller, $action, $params);
+    } catch (HttpNotFoundException $e) {
+      $this->render404Page($e);
+    } catch (UnauthorizedActionException $e) {
+      list($controller, $action) = $this->login_action;
+      $this->runAction($controller, $action);
     }
-
-    $controller = $params['controller'];
-    $action = $params['action'];
-
-    $this->runAction($controller, $action, $params);
 
     $this->response->send();
   }
@@ -110,8 +118,13 @@ abstract class Application
     $controller_class = ucfirst($controller_name) . 'Controller';
 
     $controller = $this->findController($controller_class);
+    if($controller === false) {
+      throw new HttpNotFoundException($controller_class . ' controller is not found.');
+    }
 
-    $this->response->setContent($controller);
+    $content = $controller->run($action, $params);
+
+    $this->response->setContent($content);
   }
 
   protected function findController($controller_class)
@@ -131,5 +144,27 @@ abstract class Application
     }
 
     return new $controller_class($this);
+  }
+
+  protected function render404Page($e)
+  {
+    $this->response->setStatusCode(404, 'Not Found');
+    $message = $this->isDebugMode() ? $e->getMessage() : 'Page not found';
+    $message = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+
+    $this->response->setContent(<<<EOF
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transaction//EN"
+      "http://www.w3.org/TR/xhtml1-transitional.dtd">
+      <html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html"; charset=utf-8" />
+        <title>404</title>
+      </head>
+      <body>
+        {$message}
+      </body>
+      </html>
+      EOF
+  );
   }
 }
