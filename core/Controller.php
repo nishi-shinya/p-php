@@ -9,6 +9,7 @@ abstract class Controller
   protected $response;
   protected $session;
   protected $db_manager;
+  protected $auth_actions = [];
 
   public function __construct($application)
   {
@@ -18,7 +19,7 @@ abstract class Controller
     $this->request     = $application->getRequest();
     $this->response    = $application->getResponse();
     $this->session     = $application->getSession();
-    $this->db_manager  = $application->getManager();
+    $this->db_manager  = $application->getDbManager();
   }
 
   public function run($action, $params = [])
@@ -34,14 +35,14 @@ abstract class Controller
       throw new UnauthorizedActionException();
     }
 
-    $content = $this->action_method($params);
+    $content = $this->$action_method($params);
 
     return $content;
   }
 
   protected function needsAuthentication($action)
   {
-    if ($this->auth_action === true || (is_array($this->auth_actions) && in_array($action, $this->auth_actions))) {
+    if ($this->auth_actions === true || (is_array($this->auth_actions) && in_array($action, $this->auth_actions))) {
       return true;
     }
 
@@ -89,8 +90,8 @@ abstract class Controller
 
   protected function generateCsrfToken($form_name)
   {
-    $key = 'csrf_tokens/' / $form_name;
-    $tokens = $this->sesstion->get($key, []);
+    $key = 'csrf_tokens/' . $form_name;
+    $tokens = $this->session->get($key, []);
     if (count($tokens) >= 10) {
       array_shift($tokens);
     }
