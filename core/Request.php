@@ -23,6 +23,15 @@ class Request
     return $default;
   }
 
+  public function getPost($name, $default = null)
+  {
+    if (isset($_POST[$name])) {
+      return $_POST[$name];
+    }
+
+    return $default;
+  }
+
   public function getHost()
   {
     if (!empty($_SERVER['HTTP_HOST'])) {

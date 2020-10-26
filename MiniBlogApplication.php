@@ -12,6 +12,13 @@ class MiniBlogApplication extends Application
   protected function registerRoutes()
   {
     return [
+      // UserControllerのルーティング
+      'user/:user_name' => ['controller' => 'status', 'action' => 'user'],
+      'user/:user_name/status/:id' => ['controller' => 'status', 'action' => 'show'],
+      // StatusControllerのルーティング
+      '/' => ['controller' => 'status', 'action' => 'index'],
+      '/status/post' => ['controller' => 'status', 'action' => 'post'],
+      // AccountControllerのルーティング
       '/account' => ['controller' => 'account', 'action' => 'index'],
       '/account/:action' => ['controller' => 'account']
     ];

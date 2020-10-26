@@ -77,7 +77,7 @@ abstract class Controller
   protected function redirect($url)
   {
     if (!preg_match('#https://#', $url)) {
-      $protocol = $this->require->isSsl() ? 'https://' : 'http://';
+      $protocol = $this->request->isSsl() ? 'https://' : 'http://';
       $host = $this->request->getHost();
       $base_url = $this->request->getBaseUrl();
 
@@ -106,7 +106,7 @@ abstract class Controller
 
   protected function checkCsrfToken($form_name, $token)
   {
-    $key = 'csrf_token/' . $form_name;
+    $key = 'csrf_tokens/' . $form_name;
     $tokens = $this->session->get($key, []);
 
     if (false !== $pos = array_search($token, $tokens, true)) {
