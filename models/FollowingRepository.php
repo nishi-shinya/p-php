@@ -6,7 +6,7 @@ class FollowingRepository extends DbRepository
     {
         $sql = "INSERT INTO following VALUES(:user_id, :following_id)";
 
-        $stmt = $this->execute($sql, [
+      $stmt = $this->execute($sql, [
       ':user_id' => $user_id,
       ':following_id' => $following_id,
     ]);
