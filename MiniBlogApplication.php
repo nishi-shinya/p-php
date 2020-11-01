@@ -20,7 +20,8 @@ class MiniBlogApplication extends Application
       '/status/post' => ['controller' => 'status', 'action' => 'post'],
       // AccountControllerのルーティング
       '/account' => ['controller' => 'account', 'action' => 'index'],
-      '/account/:action' => ['controller' => 'account']
+      '/account/:action' => ['controller' => 'account'],
+      '/follow' => ['controller' => 'account', 'action' => 'follow']
     ];
   }
 

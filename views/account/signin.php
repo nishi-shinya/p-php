@@ -7,16 +7,17 @@
 </p>
 
 <form action="<?php echo $base_url; ?>/account/authenticate" method="post">
-  <input type="hidden" name="_token" value="<?php echo $this->escape($_token); ?>" />
+  <input type="hidden" name="_token" value="<?php echo $this->escape($_token); ?>">
 
   <?php if (isset($errors) && count($errors)): ?>
     <?php echo $this->render('errors', ['errors' => $errors]); ?>
   <?php endif; ?>
 
-  <?php echo $this->render([
+  <?php echo $this->render(
     'account/inputs', [
-      'user_name' => $user_name, 'password' => $passwords,
-    ]
+      'user_name' => $user_name,
+      'password' => $password,
+      '_token' => $_token
   ]); ?>
 
   <p>

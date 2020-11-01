@@ -77,7 +77,7 @@ class AccountController extends Controller
     return $this->render([
       'user_name' => '',
       'password' => '',
-      '_token' => $this->generateCsrfToken('account/singin'),
+      '_token' => $this->generateCsrfToken('account/signin'),
     ]);
   }
 
