@@ -80,6 +80,8 @@ class StatusController extends Controller
     return $this->render([
       'user' => $user,
       'statuses' => $statuses,
+      'following' => $following,
+      '_token' => $this->generateCsrfToken('account/follow')
     ]);
   }
 
