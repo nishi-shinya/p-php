@@ -9,6 +9,7 @@
       endif;
     ?>
   </title>
+  <link rel="stylesheet" type="text/css" media="screen" href="../css/style.css"/>
 </head>
 <body>
   <div id="header">
