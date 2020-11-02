@@ -20,5 +20,4 @@
       <?php echo $this->render('status/status', ['status' => $status]); ?>
     <?php endforeach; ?>
   </div>
-
 </form>

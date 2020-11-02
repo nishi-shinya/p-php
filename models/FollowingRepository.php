@@ -18,7 +18,7 @@ class FollowingRepository extends DbRepository
       SELECT COUNT(user_id) as count
       FROM following
       WHERE user_id = :user_id
-        AND following = :following_id
+        AND following_id = :following_id
       ";
 
     $row = $this->fetch($sql, [
