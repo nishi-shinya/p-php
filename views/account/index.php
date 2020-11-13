@@ -16,7 +16,7 @@
       <a href="<?php echo $base_url; ?>/account/signout">ログアウト</a>
   </li>
 </ul>
-
+ 
 <h3>フォロー中</h3>
 
 <?php if(count($followings) > 0): ?>
